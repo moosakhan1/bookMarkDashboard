@@ -25,7 +25,7 @@ const payments = [
     status: "Paid",
     avatar: "/placeholder.svg?height=40&width=40",
   },
-  {
+  { 
     id: "U-003",
     name: "Mona Lewis",
     invoice: "Invoice #1017",
