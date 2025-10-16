@@ -7,7 +7,7 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    router.push("/dashboard"); // redirect to dashboard
+    router.push("login"); // redirect to dashboard
   }, [router]);
 
   return null; // nothing shown while redirecting
