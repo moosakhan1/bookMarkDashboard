@@ -112,21 +112,30 @@ export default function AllUsers() {
         </div>
 
         {/* Desktop Table */}
-        <div className="hidden md:block overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead>
-              <tr>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-[#1F1E1E]">User ID</th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-[#1F1E1E]">User Name</th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-[#1F1E1E]">Email  <ArrowIcon /></th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-[#1F1E1E]">Subscription <ArrowIcon /></th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-[#1F1E1E]">Next Renewal <ArrowIcon /></th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-[#1F1E1E]">Books Assigned <ArrowIcon /></th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-[#1F1E1E]">Overdue <ArrowIcon /></th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-[#1F1E1E]">Fine <ArrowIcon /></th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-[#1F1E1E]">Action</th>
-              </tr>
-            </thead>
+       <div className="overflow-x-auto">
+  <table className="min-w-full divide-y divide-gray-200 text-sm text-gray-700">
+    <thead className="text-[#1F1E1E]">
+      <tr className="border-b border-[#E0DDDD]">
+        {[
+          "User ID",
+          "User Name ↓",
+          "Email ↓",
+          "Subscription ↓",
+          "Next Renewal ↓",
+          "Books Assigned ↓",
+          "Overdue ↓",
+          "Fine ↓",
+          "Action",
+        ].map((title) => (
+          <th
+            key={title}
+            className="px-4 py-3 text-left font-bold whitespace-nowrap"
+          >
+            {title}
+          </th>
+        ))}
+      </tr>
+    </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {filtered.length > 0 ? filtered.map((u) => (
                 <tr key={u.id}>

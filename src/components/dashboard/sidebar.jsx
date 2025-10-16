@@ -27,7 +27,7 @@ const navigation = [
       { href: "/books/add", label: "Add New" },
       { href: "/books/user-preference", label: "User Preference List" },
       { href: "/books/all", label: "All Books" },
-      { href: "/books/overdue", label: "Overdue Book List" },
+      // { href: "/books/overdue", label: "Overdue Book List" },
     ],
   },
   { name: "All Users", href: "/users", icon: Users },
@@ -43,7 +43,11 @@ const navigation = [
     ],
   },
   { name: "Payment & Billing", href: "/billing", icon: DollarSign },
-  { name: "Settings", href: "/settings", icon: Settings, hasSubmenu: true },
+  { name: "Settings",
+    //  href: "/settings",
+      icon: Settings, 
+      // hasSubmenu: true
+     },
 ];
 
 export function Sidebar({ isOpen = false }) {
