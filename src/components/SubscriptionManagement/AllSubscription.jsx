@@ -49,7 +49,7 @@ export default function AllPlans() {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-gray-900 mb-1">
+      <h2 className="text-2xl sm:text-3xl font-semibold mb-1">
         Subscription Plans
       </h2>
       <p className="text-gray-500 mb-4">
@@ -79,7 +79,7 @@ export default function AllPlans() {
     <thead className="text-[#1F1E1E]">
       <tr className="border-b border-[#E0DDDD]">
         {[
-          "Plan ID",
+          // "Plan ID",
           "Plan Name ↓",
           "Duration ↓",
           "Books Allowed ↓",

@@ -77,7 +77,7 @@ export default function AllUsers() {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-gray-900 mb-1">All Users</h2>
+      <h2 className="text-2xl sm:text-3xl font-semibold mb-1">All Users</h2>
       <p className="text-gray-500 mb-4">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
       </p>

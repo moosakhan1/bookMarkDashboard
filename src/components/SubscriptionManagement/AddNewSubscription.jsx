@@ -59,10 +59,10 @@ export default function AddNewSubscription() {
         onSubmit={handleSave}
         className="bg-white border border-[#E0DDDD] rounded-lg p-4 sm:p-6"
       >
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 ">
           <div className="lg:col-span-2">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
+              {/* <div>
                 <label className="block text-xs font-bold text-[#1F1E1E] mb-2">
                   Plan ID
                 </label>
@@ -73,7 +73,8 @@ export default function AddNewSubscription() {
                   onChange={handleChange}
                   className="focus:outline-none focus:ring-2 focus:ring-[#737373] w-full rounded-md border border-[#E0DDDD] px-3 py-2 text-sm"
                 />
-              </div>
+              </div> */}
+              
 
               <div>
                 <label className="block text-xs font-bold text-[#1F1E1E] mb-2">
@@ -87,6 +88,14 @@ export default function AddNewSubscription() {
                   className="focus:outline-none focus:ring-2 focus:ring-[#737373] w-full rounded-md border border-[#E0DDDD] px-3 py-2 text-sm"
                 />
               </div>
+
+                  <div className="flex flex-col">
+           <label className="text-sm font-medium mb-1">Status</label>
+           <select className="focus:outline-none focus:ring-2 focus:ring-[#737373] w-full rounded-md border border-[#E0DDDD] px-3 py-2 text-sm bg-white">
+             <option>Active</option>
+             <option>Inactive</option>
+           </select>
+         </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
@@ -104,7 +113,7 @@ export default function AddNewSubscription() {
 
               <div>
                 <label className="block text-xs font-bold text-[#1F1E1E] mb-2">
-                  Duration
+                 Books Allowed at a Time
                 </label>
                 <select
                   name="category"
@@ -112,6 +121,7 @@ export default function AddNewSubscription() {
                   onChange={handleChange}
                   className="focus:outline-none focus:ring-2 focus:ring-[#737373] w-full rounded-md border border-[#E0DDDD] px-3 py-2 text-sm bg-white"
                 >
+                  <option>E.g.2</option>
                   <option>3 Months</option>
                   <option>6 Months</option>
                   <option>1 Year</option>
@@ -158,7 +168,7 @@ export default function AddNewSubscription() {
             </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-6">
             {/* Auto Renewal */}
-            <div className="flex items-center justify-between  rounded-lg px-4 py-3">
+            {/* <div className="flex items-center justify-between  rounded-lg px-4 py-3">
               <div>
                 <p className="font-medium text-sm">Auto Renewal</p>
                 <p className="text-xs text-gray-500">
@@ -177,9 +187,10 @@ export default function AddNewSubscription() {
                   }`}
                 />
               </button>
-            </div>
+            </div> */}
+        
             {/* Cancel After Grace */}
-            <div className="flex items-center justify-between  rounded-lg px-4 py-3">
+            {/* <div className="flex items-center justify-between  rounded-lg px-4 py-3">
               <div>
                 <p className="font-medium text-sm">
                   Cancel Plan Automatically After Grace Period
@@ -200,7 +211,7 @@ export default function AddNewSubscription() {
                   }`}
                 />
               </button>
-            </div>
+            </div> */}
           </div>
          <div className="mt-6">
            <button
@@ -212,7 +223,7 @@ export default function AddNewSubscription() {
          </div>
        </div>
        <div className="mt-6 lg:mt-0">
-         <div className="flex flex-col">
+         {/* <div className="flex flex-col">
            <label className="text-sm font-medium mb-1">Status</label>
            <select className="focus:outline-none focus:ring-2 focus:ring-[#737373] w-full rounded-md border border-[#E0DDDD] px-3 py-2 text-sm bg-white">
              <option>Active</option>
@@ -225,7 +236,7 @@ export default function AddNewSubscription() {
              <option>Active</option>
              <option>Inactive</option>
            </select>
-            </div>
+            </div> */}
           </div>
         </div>
       </form>

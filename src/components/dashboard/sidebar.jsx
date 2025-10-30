@@ -178,10 +178,10 @@ export function Sidebar({ isOpen = false }) {
 
       {/* Bottom Buttons */}
       <div className="flex-shrink-0 p-4 space-y-1">
-        <button className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors">
+        {/* <button className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors">
           <HelpCircle className="h-5 w-5" />
           Support
-        </button>
+        </button> */}
         <button className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-red-600 hover:bg-red-100 hover:text-red-700 transition-colors">
           <LogOut className="h-5 w-5" />
           Logout

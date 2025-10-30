@@ -61,7 +61,7 @@ export default function PaymentBilling() {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-gray-900 mb-1">
+      <h2 className="text-2xl sm:text-3xl font-semibold mb-1">
         Payment & Billing
       </h2>
       <p className="text-gray-500 mb-4">

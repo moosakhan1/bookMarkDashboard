@@ -53,7 +53,7 @@ export default function AllBooks() {
     <div>
       <div className="flex items-start justify-between mb-4">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-1">All Books</h2>
+          <h2 className="text-2xl sm:text-3xl font-semibold mb-1">All Books</h2>
           <p className="text-gray-500">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit.
           </p>
