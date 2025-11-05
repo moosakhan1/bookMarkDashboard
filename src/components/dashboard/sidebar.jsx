@@ -12,6 +12,7 @@ import {
   HelpCircle,
   LogOut,
   ChevronDown,
+  Quote
 } from "lucide-react";
 import { useState, useEffect } from "react";
 
@@ -40,6 +41,17 @@ const navigation = [
     submenu: [
       { href: "/subscriptions/add", label: "Add New" },
       { href: "/subscriptions/all", label: "All Subscription" },
+    ],
+  },
+  {
+    name: "Testimonials Management",
+    href: "/testimonials",
+    icon: Quote,
+    hasSubmenu: true,
+    defaultSub: "/testimonials/addForm",
+    submenu: [
+      { href: "/testimonials/addForm", label: "Add Testimonials" },
+      { href: "/testimonials/all", label: "All Testimonials" },
     ],
   },
   { name: "Payment & Billing", href: "/billing", icon: DollarSign },
