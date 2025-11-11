@@ -2,10 +2,12 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Search, Bell, Mail } from "lucide-react";
+import { useLogout } from "@/hooks/useLogout";
 
 export function Header({ onToggleSidebar = () => {} }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+    const { logout } = useLogout();
 
   // Click outside handler
   useEffect(() => {
@@ -112,9 +114,12 @@ export function Header({ onToggleSidebar = () => {} }) {
                 Settings
               </button>
               <div className="border-t border-gray-200"></div>
-              <button className="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100">
-                Logout
-              </button>
+              <button
+      onClick={logout}
+      className="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100"
+    >
+      Logout
+    </button>
             </div>
           )}
         </div>

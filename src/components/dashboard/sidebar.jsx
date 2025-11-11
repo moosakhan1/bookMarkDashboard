@@ -16,6 +16,7 @@ import {
   User2Icon
 } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useLogout } from "@/hooks/useLogout";
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
@@ -69,6 +70,8 @@ export function Sidebar({ isOpen = false }) {
   const [activeMenu, setActiveMenu] = useState(""); 
   const [openSubmenu, setOpenSubmenu] = useState(null);
   const [activeSubmenuLink, setActiveSubmenuLink] = useState("");
+
+   const { logout } = useLogout();
 
   useEffect(() => {
     let current = navigation.find((item) =>
@@ -195,10 +198,13 @@ export function Sidebar({ isOpen = false }) {
           <HelpCircle className="h-5 w-5" />
           Support
         </button> */}
-        <button className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-red-600 hover:bg-red-100 hover:text-red-700 transition-colors">
-          <LogOut className="h-5 w-5" />
-          Logout
-        </button>
+         <button
+      onClick={logout}
+      className="flex w-full items-center gap-3 rounded-md px-3 py-2 bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700 transition-colors"
+    >
+      <LogOut className="h-5 w-5" />
+      Logout
+    </button>
       </div>
     </aside>
   );
