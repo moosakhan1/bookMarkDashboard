@@ -12,7 +12,8 @@ import {
   HelpCircle,
   LogOut,
   ChevronDown,
-  Quote
+  Quote,
+  User2Icon
 } from "lucide-react";
 import { useState, useEffect } from "react";
 
@@ -26,36 +27,36 @@ const navigation = [
     defaultSub: "/books/add",
     submenu: [
       { href: "/books/add", label: "Add New" },
-      { href: "/books/user-preference", label: "User Preference List" },
       { href: "/books/all", label: "All Books" },
-      // { href: "/books/overdue", label: "Overdue Book List" },
-    ],
-  },
-  { name: "All Users", href: "/users", icon: Users },
-  {
-    name: "Subscription Management",
-    href: "/subscriptions",
-    icon: CreditCard,
-    hasSubmenu: true,
-    defaultSub: "/subscriptions/add",
-    submenu: [
+      { href: "/books/category", label: "Category" },
+        ],
+      },
+      { name: "All Users", href: "/users", icon: Users },
+      { name: "User Preference", href: "/user-preference", icon: User2Icon }, 
+      {
+        name: "Subscription Management",
+        href: "/subscriptions",
+        icon: CreditCard,
+        hasSubmenu: true,
+        defaultSub: "/subscriptions/add",
+        submenu: [
       { href: "/subscriptions/add", label: "Add New" },
       { href: "/subscriptions/all", label: "All Subscription" },
-    ],
-  },
-  {
-    name: "Testimonials Management",
-    href: "/testimonials",
-    icon: Quote,
-    hasSubmenu: true,
-    defaultSub: "/testimonials/addForm",
-    submenu: [
+        ],
+      },
+      {
+        name: "Testimonials Management",
+        href: "/testimonials",
+        icon: Quote,
+        hasSubmenu: true,
+        defaultSub: "/testimonials/addForm",
+        submenu: [
       { href: "/testimonials/addForm", label: "Add Testimonials" },
       { href: "/testimonials/all", label: "All Testimonials" },
-    ],
-  },
-  { name: "Payment & Billing", href: "/billing", icon: DollarSign },
-  { name: "Settings",
+        ],
+      },
+      { name: "Payment & Billing", href: "/billing", icon: DollarSign },
+      { name: "Settings",
     //  href: "/settings",
       icon: Settings, 
       // hasSubmenu: true

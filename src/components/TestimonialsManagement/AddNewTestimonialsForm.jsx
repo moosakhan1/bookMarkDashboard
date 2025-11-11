@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import axiosInstance from "@/lib/axiosInstance";
 import Image from "next/image";
+import toast from "react-hot-toast";
 
 export default function AddNewTestimonial() {
   const [form, setForm] = useState({
@@ -16,6 +17,7 @@ export default function AddNewTestimonial() {
 
   const [imagePreview, setImagePreview] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [submitting, setSubmitting] = useState(false); // ← NEW: Track form submit
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -26,15 +28,46 @@ export default function AddNewTestimonial() {
     const file = e.target.files[0];
     if (!file) return;
 
+    const toastId = toast.loading("Uploading image...");
     setUploading(true);
-    const preview = URL.createObjectURL(file);
-    setImagePreview(preview);
-    setForm((prev) => ({ ...prev, imageUrl: preview }));
-    setUploading(false);
+
+    try {
+      const data = new FormData();
+      data.append("file", file);
+      data.append("upload_preset", "testimonials_upload");
+      data.append("cloud_name", "dwbsdqaml");
+
+      const res = await fetch(
+        `https://api.cloudinary.com/v1_1/dwbsdqaml/image/upload`,
+        {
+          method: "POST",
+          body: data,
+        }
+      );
+
+      const cloudData = await res.json();
+
+      if (cloudData.secure_url) {
+        setForm((prev) => ({ ...prev, imageUrl: cloudData.secure_url }));
+        setImagePreview(cloudData.secure_url);
+        toast.success("Image uploaded successfully!", { id: toastId });
+      } else {
+        toast.error("Upload failed. Try again.", { id: toastId });
+      }
+    } catch (err) {
+      console.error("Upload error:", err);
+      toast.error("Failed to upload image", { id: toastId });
+    } finally {
+      setUploading(false);
+    }
   };
 
   function handleSave(e) {
     e.preventDefault();
+    if (submitting) return;
+
+    setSubmitting(true);
+    const toastId = toast.loading("Creating testimonial...");
 
     const payload = {
       name: form.name.trim(),
@@ -48,8 +81,8 @@ export default function AddNewTestimonial() {
 
     axiosInstance
       .post("/api/testimonials", payload)
-      .then(() => {
-        alert("Testimonial created successfully!");
+      .then((res) => {
+        toast.success("Testimonial created successfully!", { id: toastId });
         setForm({
           name: "",
           role: "",
@@ -61,8 +94,12 @@ export default function AddNewTestimonial() {
         setImagePreview("");
       })
       .catch((err) => {
-        console.error("Error:", err.response?.data || err.message);
-        alert("Failed: " + JSON.stringify(err.response?.data));
+        const message = err.response?.data?.message || "Failed to save testimonial";
+        toast.error(message, { id: toastId });
+        console.error("Error:", err);
+      })
+      .finally(() => {
+        setSubmitting(false);
       });
   }
 
@@ -85,17 +122,18 @@ export default function AddNewTestimonial() {
             Profile Image
           </label>
           <div className="flex items-center gap-4">
-            <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-dashed border-gray-300 flex items-center justify-center">
+            <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50">
               {imagePreview ? (
                 <Image
                   src={imagePreview}
                   alt="Preview"
                   width={96}
                   height={96}
+                  unoptimized // ← FIXES THE WARNING
                   className="object-cover w-full h-full"
                 />
               ) : (
-                <span className="text-gray-500 text-xs">No image</span>
+                <span className="text-gray-400 text-xs">No image</span>
               )}
             </div>
             <div>
@@ -103,7 +141,8 @@ export default function AddNewTestimonial() {
                 type="file"
                 accept="image/*"
                 onChange={handleImageChange}
-                className="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#EEFF00] file:text-black hover:file:bg-yellow-400"
+                disabled={uploading}
+                className="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#EEFF00] file:text-black hover:file:bg-yellow-400 disabled:opacity-50"
               />
               <p className="text-xs text-gray-500 mt-1">
                 Recommended: 200x200px, PNG/JPG
@@ -215,10 +254,10 @@ export default function AddNewTestimonial() {
         <div className="flex justify-end">
           <button
             type="submit"
-            disabled={uploading}
-            className="inline-flex items-center gap-2 rounded-md bg-[#1F1E1E] text-white px-6 py-3 text-sm hover:bg-gray-800 transition disabled:opacity-50"
+            disabled={uploading || submitting}
+            className="inline-flex items-center gap-2 rounded-md bg-[#1F1E1E] text-white px-6 py-3 text-sm hover:bg-gray-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {uploading ? "Uploading..." : "Save Testimonial"}
+            {submitting ? "Saving..." : uploading ? "Uploading..." : "Save Testimonial"}
           </button>
         </div>
       </form>

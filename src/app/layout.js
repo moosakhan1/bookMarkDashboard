@@ -1,5 +1,7 @@
+//src/app/layout.js
 import { Host_Grotesk } from "next/font/google"; // Import Host Grotesk
 import "./globals.css";
+import { Toaster } from "react-hot-toast";
 
 // Initialize the font
 const hostGrotesk = Host_Grotesk({
@@ -20,6 +22,30 @@ export default function RootLayout({ children }) {
         className={`${hostGrotesk.variable} antialiased bg-gray-50 text-gray-900`}
       >
         {children}
+        <Toaster 
+              position="top-right"
+              toastOptions={{
+                duration: 3000,
+                style: {
+                  background: '#111010',
+                  color: '#fff',
+                  borderRadius: '12px',
+                  padding: '16px',
+                },
+                success: {
+                  iconTheme: {
+                    primary: '#EEFF00',
+                    secondary: '#111010',
+                  },
+                },
+                error: {
+                  iconTheme: {
+                    primary: '#ff3333',
+                    secondary: '#111010',
+                  },
+                },
+              }}
+            />
       </body>
     </html>
   );
