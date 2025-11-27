@@ -22,16 +22,21 @@ export default function AllUsers() {
         setLoading(true);
         const res = await axiosInstance.get("/api/admin/users");
         const apiUsers = Array.isArray(res.data) ? res.data : [];
-        const formatted = apiUsers.map(u => ({
+        const formatted = apiUsers.map((u) => ({
           id: String(u.id || "U-000"),
           userName: String(u.userName || "Unnamed User"),
           email: String(u.email || "no-email@unknown.com"),
-          avatar: u.avatar && typeof u.avatar === "string"
-            ? u.avatar
-            : `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(u.email || u.id || "user")}`,
-          plan: u.plan !== null && u.plan !== undefined ? String(u.plan) : "Free",
+          avatar:
+            u.avatar && typeof u.avatar === "string"
+              ? u.avatar
+              : `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(
+                  u.email || u.id || "user"
+                )}`,
+          plan:
+            u.plan !== null && u.plan !== undefined ? String(u.plan) : "Free",
           renewalDate: u.renewalDate !== null ? String(u.renewalDate) : "—",
-          booksAssigned: u.booksAssigned !== null ? String(u.booksAssigned) : "0",
+          booksAssigned:
+            u.booksAssigned !== null ? String(u.booksAssigned) : "0",
           overdue: u.overdue !== null ? String(u.overdue) : "0",
           // fine: u.fine !== null ? `$${parseFloat(u.fine || 0).toFixed(2)}` : "$0.00",
         }));
@@ -65,59 +70,73 @@ export default function AllUsers() {
     let result = [...users];
     if (search.trim()) {
       const term = search.toLowerCase();
-      result = result.filter(u =>
-        u.userName.toLowerCase().includes(term) ||
-        u.email.toLowerCase().includes(term) ||
-        u.id.toLowerCase().includes(term)
+      result = result.filter(
+        (u) =>
+          u.userName.toLowerCase().includes(term) ||
+          u.email.toLowerCase().includes(term) ||
+          u.id.toLowerCase().includes(term)
       );
     }
     if (filter !== "all") {
       if (filter === "overdue")
-        result = result.filter(u => parseInt(u.overdue || "0", 10) > 0);
+        result = result.filter((u) => parseInt(u.overdue || "0", 10) > 0);
       // if (filter === "fine")
       //   result = result.filter(u => parseFloat((u.fine || "$0").replace("$", "") || "0") > 0);
       if (filter === "monthly")
-        result = result.filter(u => (u.plan || "").toLowerCase().includes("monthly"));
+        result = result.filter((u) =>
+          (u.plan || "").toLowerCase().includes("monthly")
+        );
       if (filter === "quarterly")
-        result = result.filter(u => (u.plan || "").toLowerCase().includes("quarterly"));
+        result = result.filter((u) =>
+          (u.plan || "").toLowerCase().includes("quarterly")
+        );
       if (filter === "yearly")
-        result = result.filter(u => (u.plan || "").toLowerCase().includes("yearly"));
+        result = result.filter((u) =>
+          (u.plan || "").toLowerCase().includes("yearly")
+        );
       if (filter === "lifetime")
-        result = result.filter(u => (u.plan || "").toLowerCase().includes("lifetime"));
+        result = result.filter((u) =>
+          (u.plan || "").toLowerCase().includes("lifetime")
+        );
     }
     setFiltered(result);
   }, [search, filter, users]);
   const handleDelete = (userId, userName) => {
-    toast((t) => (
-      <div className="flex flex-col gap-4 p-2">
-        <p className="font-medium">Delete user <strong>{userName || "Unknown"}</strong>?</p>
-        <p className="text-sm text-gray-600">This action cannot be undone.</p>
-        <div className="flex gap-3 justify-end">
-          <button
-            onClick={() => {
-              toast.dismiss(t.id);
-              performDelete(userId);
-            }}
-            className="px-4 py-2 bg-red-600 text-white rounded-md text-sm font-medium hover:bg-red-700"
-          >
-            Yes, Delete
-          </button>
-          <button
-            onClick={() => toast.dismiss(t.id)}
-            className="px-4 py-2 bg-gray-300 rounded-md text-sm font-medium hover:bg-gray-400"
-          >
-            Cancel
-          </button>
+    toast(
+      (t) => (
+        <div className="flex flex-col gap-4 p-2">
+          <p className="font-medium">
+            Delete user <strong>{userName || "Unknown"}</strong>?
+          </p>
+          <p className="text-sm text-gray-600">This action cannot be undone.</p>
+          <div className="flex gap-3 justify-end">
+            <button
+              onClick={() => {
+                toast.dismiss(t.id);
+                performDelete(userId);
+              }}
+              className="px-4 py-2 bg-red-600 text-white rounded-md text-sm font-medium hover:bg-red-700"
+            >
+              Yes, Delete
+            </button>
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="px-4 py-2 bg-gray-300 rounded-md text-sm font-medium hover:bg-gray-400"
+            >
+              Cancel
+            </button>
+          </div>
         </div>
-      </div>
-    ), { duration: 10000 });
+      ),
+      { duration: 10000 }
+    );
   };
   const performDelete = async (userId) => {
     const toastId = toast.loading("Deleting user...");
     try {
-      await new Promise(r => setTimeout(r, 800));
-      setUsers(prev => prev.filter(u => u.id !== userId));
-      setFiltered(prev => prev.filter(u => u.id !== userId));
+      await new Promise((r) => setTimeout(r, 800));
+      setUsers((prev) => prev.filter((u) => u.id !== userId));
+      setFiltered((prev) => prev.filter((u) => u.id !== userId));
       toast.success("User deleted successfully!", { id: toastId });
     } catch (err) {
       toast.error("Delete failed", { id: toastId });
@@ -132,8 +151,16 @@ export default function AllUsers() {
       return;
     }
     // const headers = ["ID", "Name", "Email", "Plan", "Renewal", "Books", "Overdue", "Fine"];
-    const headers = ["ID", "Name", "Email", "Plan", "Renewal", "Books", "Overdue"];
-    const rows = filtered.map(u => [
+    const headers = [
+      "ID",
+      "Name",
+      "Email",
+      "Plan",
+      "Renewal",
+      "Books",
+      "Overdue",
+    ];
+    const rows = filtered.map((u) => [
       u.id,
       `"${u.userName.replace(/"/g, '""')}"`,
       u.email,
@@ -143,7 +170,7 @@ export default function AllUsers() {
       u.overdue,
       // u.fine
     ]);
-    const csv = [headers, ...rows].map(row => row.join(",")).join("\n");
+    const csv = [headers, ...rows].map((row) => row.join(",")).join("\n");
     const blob = new Blob([csv], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -163,7 +190,9 @@ export default function AllUsers() {
   }
   return (
     <div>
-      <h2 className="text-2xl sm:text-3xl font-semibold mb-1 text-[#1F1E1E]">All Users</h2>
+      <h2 className="text-2xl sm:text-3xl font-semibold mb-1 text-[#1F1E1E]">
+        All Users
+      </h2>
       <p className="text-gray-500 mb-6">
         Search, filter, and manage every subscriber with precision.
       </p>
@@ -195,11 +224,25 @@ export default function AllUsers() {
                 <option value="yearly">Yearly Plan</option>
                 <option value="lifetime">Lifetime Access</option>
               </select>
-              <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+              <svg
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M19 9l-7 7-7-7"
+                />
               </svg>
             </div>
-            <button onClick={exportCSV} className="flex items-center gap-2 px-6 py-3 rounded-xl bg-[#1F1E1E] text-white hover:bg-black transition-all font-medium">
+            <button
+              onClick={exportCSV}
+              className="flex items-center gap-2 px-6 py-3 rounded-xl bg-[#1F1E1E] text-white hover:bg-black transition-all font-medium"
+            >
               <Download className="h-4 w-4" />
               Export CSV
             </button>
@@ -210,8 +253,20 @@ export default function AllUsers() {
           <table className="w-full text-sm border-collapse">
             <thead className="border-b border-gray-200 bg-gray-50">
               <tr>
-                {["ID", "User", "Email", "Plan", "Renewal", "Books", "Overdue", "Actions"].map((h) => (
-                  <th key={h} className="text-left py-3 px-4.5 font-semibold text-[#1F1E1E] uppercase text-xs tracking-wide">
+                {[
+                  "ID",
+                  "User",
+                  "Email",
+                  "Plan",
+                  "Renewal",
+                  "Books",
+                  "Overdue",
+                  "Actions",
+                ].map((h) => (
+                  <th
+                    key={h}
+                    className="text-left py-3 px-6 font-semibold text-[#1F1E1E] uppercase text-xs tracking-wide"
+                  >
                     {h}
                   </th>
                 ))}
@@ -227,9 +282,14 @@ export default function AllUsers() {
                 </tr>
               ) : (
                 filtered.map((u) => (
-                  <tr key={u.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                    <td className="py-4 px-4 font-mono text-xs text-gray-600">{u.id}</td>
-                    <td className="py-4 px-4">
+                  <tr
+                    key={u.id}
+                    className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
+                  >
+                    <td className="py-4 px-4 font-mono text-xs text-gray-600">
+                      {u.id}
+                    </td>
+                    <td className="py-4 px-4 max-w-[200px] break-words">
                       <div className="flex items-center gap-3">
                         <Image
                           src={u.avatar}
@@ -242,36 +302,68 @@ export default function AllUsers() {
                             e.currentTarget.src = DEFAULT_AVATAR;
                           }}
                         />
-                        <span className="font-medium text-[#1F1E1E]">{u.userName}</span>
+                        <span className="font-medium text-[#1F1E1E] max-w-[150px] break-words">
+                          {u.userName}
+                        </span>
                       </div>
                     </td>
-                    <td className="py-4 px-2 text-gray-600">{u.email}</td>
+                    <td className="py-4 px-2 text-gray-600 max-w-[250px] break-words">
+                      {u.email}
+                    </td>
                     <td className="py-4 px-0">
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        u.plan === "Free" ? "bg-gray-100 text-gray-700" :
-                        u.plan.includes("Lifetime") ? "bg-purple-100 text-purple-700" :
-                        "bg-[#EEFF00]/30 text-[#1F1E1E]"
-                      }`}>
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-medium ${
+                          u.plan === "Free"
+                            ? "bg-gray-100 text-gray-700"
+                            : u.plan.includes("Lifetime")
+                            ? "bg-purple-100 text-purple-700"
+                            : "bg-[#EEFF00]/30 text-[#1F1E1E]"
+                        }`}
+                      >
                         {u.plan}
                       </span>
                     </td>
-                    <td className="py-4 px-4 text-gray-600">{u.renewalDate}</td>
-                    <td className="py-4 px-4 text-center">{u.booksAssigned}</td>
-                    <td className="py-4 px-4 text-center">
-                      <span className={`font-bold ${parseInt(u.overdue) > 0 ? "text-red-600" : "text-green-600"}`}>
+                    <td className="py-4 px-2 text-gray-600 w-24 text-center">
+                      {u.renewalDate}
+                    </td>
+                    <td className="py-4 px-2 text-center w-20">
+                      {u.booksAssigned}
+                    </td>
+                    <td className="py-4 px-2 text-center w-20">
+                      <span
+                        className={`font-bold ${
+                          parseInt(u.overdue) > 0
+                            ? "text-red-600"
+                            : "text-green-600"
+                        }`}
+                      >
                         {u.overdue}
                       </span>
                     </td>
                     {/* <td className="py-4 px-4 font-bold text-red-600">{u.fine}</td> */}
                     <td className="py-4 px-6">
                       <div className="flex gap-0.1">
-                        <button onClick={() => toast.success(`Viewing ${u.userName}'s profile`)} className="p-2 rounded-full hover:bg-blue-100 transition-all group" title="View">
+                        <button
+                          onClick={() =>
+                            toast.success(`Viewing ${u.userName}'s profile`)
+                          }
+                          className="p-2 rounded-full hover:bg-blue-100 transition-all group"
+                          title="View"
+                        >
                           <Eye className="h-5 w-5 text-blue-600 group-hover:scale-110 transition-transform" />
                         </button>
-                        <button onClick={() => handleEdit(u)} className="p-2 rounded-full hover:bg-yellow-100 transition-all group" title="Edit">
-                          <Edit2 className="h-5 w-5 text-yellow-600 group-hover:scale-110 transition-transform" />
+                        <button
+                          onClick={() => handleEdit(u)}
+                          className="p-2 rounded-full hover:bg-blue-100 transition-all group"
+                          title="Edit"
+                        >
+                          <Edit2 className="h-5 w-5 text-blue-600 group-hover:scale-110 transition-transform" />
                         </button>
-                        <button onClick={() => handleDelete(u.id, u.userName)} className="p-2 rounded-full hover:bg-red-100 transition-all group" title="Delete">
+                        <button
+                          onClick={() => handleDelete(u.id, u.userName)}
+                          className="p-2 rounded-full hover:bg-red-100 transition-all group"
+                          title="Delete"
+                        >
                           <Trash2 className="h-5 w-5 text-red-600 group-hover:scale-110 transition-transform" />
                         </button>
                       </div>
@@ -285,10 +377,15 @@ export default function AllUsers() {
         {/* Mobile Cards */}
         <div className="md:hidden space-y-4">
           {filtered.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">No users found.</div>
+            <div className="text-center py-8 text-gray-500">
+              No users found.
+            </div>
           ) : (
             filtered.map((u) => (
-              <div key={u.id} className="border rounded-2xl p-5 bg-white shadow-sm hover:shadow-md transition">
+              <div
+                key={u.id}
+                className="border rounded-2xl p-5 bg-white shadow-sm hover:shadow-md transition"
+              >
                 <div className="flex justify-between items-start mb-4">
                   <div className="flex gap-3">
                     <Image
@@ -302,32 +399,55 @@ export default function AllUsers() {
                         e.currentTarget.src = DEFAULT_AVATAR;
                       }}
                     />
-                    <div>
-                      <div className="font-semibold text-lg">{u.userName}</div>
+                    <div className="break-words">
+                      <div className="font-semibold text-lg max-w-[150px] break-words">
+                        {u.userName}
+                      </div>
                       <div className="text-xs text-gray-500">{u.id}</div>
-                      <div className="text-sm text-gray-600">{u.email}</div>
+                      <div className="text-sm text-gray-600 max-w-[200px] break-words">
+                        {u.email}
+                      </div>
                     </div>
                   </div>
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                    u.plan === "Free" ? "bg-gray-100 text-gray-700" : "bg-[#EEFF00]/30 text-[#1F1E1E]"
-                  }`}>
+                  <span
+                    className={`px-3 py-1 rounded-full text-xs font-medium ${
+                      u.plan === "Free"
+                        ? "bg-gray-100 text-gray-700"
+                        : "bg-[#EEFF00]/30 text-[#1F1E1E]"
+                    }`}
+                  >
                     {u.plan}
                   </span>
                 </div>
                 <div className="grid grid-cols-2 gap-y-4 gap-x-24 text-sm mb-4">
-                  <div><span className="text-gray-600">Renewal:</span> {u.renewalDate}</div>
-                  <div><span className="text-gray-600">Books:</span> {u.booksAssigned}</div>
-                  <div><span className="text-gray-600">Overdue:</span> <strong className="text-red-600">{u.overdue}</strong></div>
+                  <div>
+                    <span className="text-gray-600">Renewal:</span>{" "}
+                    {u.renewalDate}
+                  </div>
+                  <div>
+                    <span className="text-gray-600">Books:</span>{" "}
+                    {u.booksAssigned}
+                  </div>
+                  <div>
+                    <span className="text-gray-600">Overdue:</span>{" "}
+                    <strong className="text-red-600">{u.overdue}</strong>
+                  </div>
                   {/* <div><span className="text-gray-600">Fine:</span> <strong className="text-red-600">{u.fine}</strong></div> */}
                 </div>
                 <div className="flex justify-end gap-3 pt-3 border-t border-gray-200">
                   <button className="p-2.5 rounded-full hover:bg-blue-100 group transition-all">
                     <Eye className="h-5 w-5 text-blue-600 group-hover:scale-110 transition-transform" />
                   </button>
-                  <button onClick={() => handleEdit(u)} className="p-2.5 rounded-full hover:bg-yellow-100 group transition-all">
+                  <button
+                    onClick={() => handleEdit(u)}
+                    className="p-2.5 rounded-full hover:bg-yellow-100 group transition-all"
+                  >
                     <Edit2 className="h-5 w-5 text-yellow-600 group-hover:scale-110 transition-transform" />
                   </button>
-                  <button onClick={() => handleDelete(u.id, u.userName)} className="p-2.5 rounded-full hover:bg-red-100 group transition-all">
+                  <button
+                    onClick={() => handleDelete(u.id, u.userName)}
+                    className="p-2.5 rounded-full hover:bg-red-100 group transition-all"
+                  >
                     <Trash2 className="h-5 w-5 text-red-600 group-hover:scale-110 transition-transform" />
                   </button>
                 </div>

@@ -13,7 +13,8 @@ import {
   LogOut,
   ChevronDown,
   Quote,
-  User2Icon
+  User2Icon,
+  ClipboardList 
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useLogout } from "@/hooks/useLogout";
@@ -30,10 +31,21 @@ const navigation = [
       { href: "/books/add", label: "Add New" },
       { href: "/books/all", label: "All Books" },
       { href: "/books/category", label: "Category" },
-        ],
+        ], 
       },
       { name: "All Users", href: "/users", icon: Users },
       { name: "User Preference", href: "/user-preference", icon: User2Icon }, 
+      {
+        name: "Create Order",
+        href: "/create-order",
+        icon: ClipboardList ,
+        hasSubmenu: true,
+        defaultSub: "/create-order/createOrderForm",
+        submenu: [
+      { href: "/create-order/createOrderForm", label: "Create Order Form" },
+      { href: "/create-order/createOrderList", label: "Create Order List" },
+        ],
+      },
       {
         name: "Subscription Management",
         href: "/subscriptions",
@@ -210,194 +222,3 @@ export function Sidebar({ isOpen = false }) {
   );
 }
 
-
-
-
-// "use client";
-
-// import Link from "next/link";
-// import { usePathname } from "next/navigation";
-// import {
-//   LayoutDashboard,
-//   BookOpen,
-//   Users,
-//   CreditCard,
-//   DollarSign,
-//   Settings,
-//   HelpCircle,
-//   LogOut,
-//   ChevronDown,
-// } from "lucide-react";
-// import { useState, useEffect } from "react";
-
-// const navigation = [
-//   { name: "Dashboard", href: "/", icon: LayoutDashboard },
-//   { name: "Book Management", href: "/books", icon: BookOpen, hasSubmenu: true },
-//   { name: "All Users", href: "/users", icon: Users },
-//   {
-//     name: "Subscription Management",
-//     href: "/subscriptions",
-//     icon: CreditCard,
-//     hasSubmenu: true,
-//   },
-//   { name: "Payment & Billing", href: "/billing", icon: DollarSign },
-//   { name: "Settings", href: "/settings", icon: Settings, hasSubmenu: true },
-// ];
-
-// export function Sidebar({ isOpen = false, onClose = () => {} }) {
-//   const pathname = usePathname();
-//   const [activeMenu, setActiveMenu] = useState("Dashboard");
-//   const [openSubmenu, setOpenSubmenu] = useState(null);
-
-//   // Automatically update active menu and open submenu based on route
-//   useEffect(() => {
-//     const current = navigation.find((item) => pathname.startsWith(item.href));
-//     if (current) {
-//       setActiveMenu(current.name);
-//       if (current.hasSubmenu) setOpenSubmenu(current.name);
-//     }
-//   }, [pathname]);
-
-//   return (
-//     <aside
-//       className={`fixed inset-y-0 left-0 z-30 w-64 transform border-r border-[#FFEFD5] transition-transform duration-200 ease-in-out md:static md:translate-x-0 ${
-//         isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
-//       } flex flex-col`}
-//       aria-hidden={!isOpen}
-//       style={{ background: "linear-gradient(90deg, #FFFFFF 0%, #FFFBF5 100%)" }}
-//     >
-//       {/* Logo */}
-//       <Link href="/dashboard">
-//         <div className="flex h-16 items-center gap-2 px-6 flex-shrink-0">
-//           <span className="text-2xl cursor-pointer w-42 font-bold text-gray-900">
-//             <img src="/BookMark.png" alt="BookMark Logo" />
-//           </span>
-//         </div>
-//       </Link>
-
-//       {/* Navigation */}
-//       <nav className="flex-1 overflow-y-auto p-4 space-y-1">
-//         {navigation.map((item) => {
-//           const isActive = activeMenu === item.name;
-//           return (
-//             <div key={item.name}>
-//               <button
-//                 className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-//                   isActive
-//                     ? "bg-black text-white"
-//                     : " text-gray-500 cursor-pointer"
-//                 }`}
-//                 onClick={() => {
-//                   setActiveMenu(item.name);
-//                   if (item.hasSubmenu) {
-//                     setOpenSubmenu(
-//                       openSubmenu === item.name ? null : item.name
-//                     );
-//                   }
-//                 }}
-//               >
-//                 <item.icon className="h-5 w-5" />
-//                 <span className="flex-1 text-left">{item.name}</span>
-//                 {item.hasSubmenu && (
-//                   <ChevronDown
-//                     className={`h-4 w-4 opacity-50 transition-transform ${
-//                       openSubmenu === item.name ? "rotate-180" : ""
-//                     }`}
-//                   />
-//                 )}
-//               </button>
-
-//               {/* Book Management submenu */}
-//               {item.hasSubmenu &&
-//                 openSubmenu === item.name &&
-//                 item.name === "Book Management" && (
-//                   <div className="ml-6 mt-1 flex flex-col gap-1">
-//                     <Link
-//                       href="/books/add"
-//                       className={`block rounded-md px-3 py-2 text-sm transition-colors ${
-//                         pathname === "/books/add"
-//                           ? "bg-black text-white"
-//                           : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
-//                       }`}
-//                     >
-//                       Add New
-//                     </Link>
-//                     <Link
-//                       href="/books/user-preference"
-//                       className={`block rounded-md px-3 py-2 text-sm transition-colors ${
-//                         pathname === "/books/user-preference"
-//                           ? "bg-black text-white"
-//                           : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
-//                       }`}
-//                     >
-//                       User Preference List
-//                     </Link>
-//                     <Link
-//                       href="/books/all"
-//                       className={`block rounded-md px-3 py-2 text-sm transition-colors ${
-//                         pathname === "/books/all"
-//                           ? "bg-black text-white"
-//                           : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
-//                       }`}
-//                     >
-//                       All Books
-//                     </Link>
-//                     <Link
-//                       href="/books/overdue"
-//                       className={`block rounded-md px-3 py-2 text-sm transition-colors ${
-//                         pathname === "/books/overdue"
-//                           ? "bg-black text-white"
-//                           : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
-//                       }`}
-//                     >
-//                       Overdue Book List
-//                     </Link>
-//                   </div>
-//                 )}
-
-//               {/* Subscription Management submenu */}
-//               {item.hasSubmenu &&
-//                 openSubmenu === item.name &&
-//                 item.name === "Subscription Management" && (
-//                   <div className="ml-6 mt-1 flex flex-col gap-1">
-//                     <Link
-//                       href="/subscriptions/add"
-//                       className={`block rounded-md px-3 py-2 text-sm transition-colors ${
-//                         pathname === "/subscriptions/add"
-//                           ? "bg-black text-white"
-//                           : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
-//                       }`}
-//                     >
-//                       Add New
-//                     </Link>
-//                     <Link
-//                       href="/subscriptions/all"
-//                       className={`block rounded-md px-3 py-2 text-sm transition-colors ${
-//                         pathname === "/subscriptions/all"
-//                           ? "bg-black text-white"
-//                           : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
-//                       }`}
-//                     >
-//                       All Subscription
-//                     </Link>
-//                   </div>
-//                 )}
-//             </div>
-//           );
-//         })}
-//       </nav>
-
-//       {/* Bottom Buttons */}
-//       <div className="flex-shrink-0 p-4 space-y-1">
-//         <button className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors">
-//           <HelpCircle className="h-5 w-5" />
-//           Support
-//         </button>
-//         <button className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-red-600 hover:bg-red-100 hover:text-red-700 transition-colors">
-//           <LogOut className="h-5 w-5" />
-//           Logout
-//         </button>
-//       </div>
-//     </aside>
-//   );
-// }
